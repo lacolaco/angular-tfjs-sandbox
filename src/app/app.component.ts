@@ -3,8 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  host: {
+    class: 'flex p-4 space-x-2 items-center',
+  },
 })
 export class AppComponent {
-  title = 'angular-tfjs-sandbox';
+  text = 'Hello Angular!';
 }
