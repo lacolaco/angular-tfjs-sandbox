@@ -4,9 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { ToxicityPipe } from './toxicity.pipe';
+import { EmojifyPipe } from './emojify.pipe';
 
 @NgModule({
-  declarations: [AppComponent, ToxicityPipe],
+  declarations: [AppComponent, ToxicityPipe, EmojifyPipe],
   imports: [BrowserModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
