@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ToxicityService, ToxicityPrediction } from './toxicity.service';
+import { ToxicityPrediction } from './toxicity';
+import { ToxicityService } from './toxicity.service';
 
 @Pipe({
   name: 'toxicity',
