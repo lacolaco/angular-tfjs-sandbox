@@ -15,10 +15,10 @@ yarn add comlink
 
 ## 2. Web Worker モジュールの生成
 
-`ng generate webworker` コマンドを使って Web Worker モジュールとして使用する TypeScript ファイルを生成する。また、同時に Angular CLI が `tsconfig.worker.json` を生成するため、Web Worker 用の TypeScript 設定も完了する。
+`ng generate webWorker` コマンドを使って Web Worker モジュールとして使用する TypeScript ファイルを生成する。また、同時に Angular CLI が `tsconfig.worker.json` を生成するため、Web Worker 用の TypeScript 設定も完了する。
 
 ```
-ng g webworker toxicity
+ng g webWorker toxicity
 ```
 
 これで `toxicity.worker.ts` ファイルが生成される。
@@ -47,14 +47,15 @@ async function loadModel() {
 
 export const api = {
   async classify(input: string): Promise<ToxicityPrediction[]> {
-    return loadModel()
-      .then((model) => model.classify(input))
-      .then((result) =>
-        result.map((prediction) => ({
-          label: prediction.label,
-          match: prediction.results.some((r) => r.match),
-        }))
-      );
+    // 学習済みモデルの読み込み
+    const model = await loadModel();
+    // 計算
+    const predictions = await model.classify(input);
+    // 計算結果の整形
+    return predictions.map((prediction) => ({
+      label: prediction.label,
+      match: prediction.results.some((r) => r.match),
+    }));
   },
 };
 

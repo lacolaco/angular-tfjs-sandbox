@@ -90,21 +90,16 @@ export type ToxicityPrediction = {
 })
 export class ToxicityService {
   // テキストの毒性を分類する
-  classify(input: string): Promise<ToxicityPrediction[]> {
-    return (
-      toxicity
-        // 学習済みモデルの読み込み
-        .load(threshold, [])
-        // 計算
-        .then((model) => model.classify(input))
-        // 計算結果の整形
-        .then((result) =>
-          result.map((prediction) => ({
-            label: prediction.label,
-            match: prediction.results.some((r) => r.match),
-          }))
-        )
-    );
+  async classify(input: string): Promise<ToxicityPrediction[]> {
+    // 学習済みモデルの読み込み
+    const model = await toxicity.load(threshold, []);
+    // 計算
+    const predictions = await model.classify(input);
+    // 計算結果の整形
+    return predictions.map((prediction) => ({
+      label: prediction.label,
+      match: prediction.results.some((r) => r.match),
+    }));
   }
 }
 ```
@@ -125,4 +120,13 @@ export class ToxicityPipe implements PipeTransform {
     return this.toxicityService.classify(value);
   }
 }
+```
+
+### `async` パイプを追加する
+
+`toxicity`パイプの戻り値が `Promise` になったので非同期データを表示するために `async` パイプを使用します。
+また、デバッグのために `json` パイプでオブジェクトを JSON 文字列として表示できるようにします。
+
+```html
+<p>{{ text | toxicity | async | json }}</p>
 ```

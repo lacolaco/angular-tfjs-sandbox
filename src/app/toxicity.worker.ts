@@ -15,14 +15,15 @@ async function loadModel() {
 
 export const api = {
   async classify(input: string): Promise<ToxicityPrediction[]> {
-    return loadModel()
-      .then((model) => model.classify(input))
-      .then((result) =>
-        result.map((prediction) => ({
-          label: prediction.label,
-          match: prediction.results.some((r) => r.match),
-        }))
-      );
+    // 学習済みモデルの読み込み
+    const model = await loadModel();
+    // 計算
+    const predictions = await model.classify(input);
+    // 計算結果の整形
+    return predictions.map((prediction) => ({
+      label: prediction.label,
+      match: prediction.results.some((r) => r.match),
+    }));
   },
 };
 
